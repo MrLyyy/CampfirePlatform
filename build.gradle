@@ -1,0 +1,17 @@
+plugins {
+    // see https://fabricmc.net/develop/ for new versions
+    id 'net.fabricmc.fabric-loom-remap' version '1.18.2' apply false
+    // see https://projects.neoforged.net/neoforged/moddevgradle for new versions
+    id 'net.neoforged.moddev' version '2.0.148' apply false
+}
+
+tasks.named('updateDaemonJvm') {
+    languageVersion = JavaLanguageVersion.of(25)
+    toolchainPlatforms = [
+            org.gradle.platform.BuildPlatformFactory.of(org.gradle.platform.Architecture.X86_64, org.gradle.platform.OperatingSystem.WINDOWS),
+            org.gradle.platform.BuildPlatformFactory.of(org.gradle.platform.Architecture.X86_64, org.gradle.platform.OperatingSystem.LINUX),
+            org.gradle.platform.BuildPlatformFactory.of(org.gradle.platform.Architecture.AARCH64, org.gradle.platform.OperatingSystem.LINUX),
+            org.gradle.platform.BuildPlatformFactory.of(org.gradle.platform.Architecture.X86_64, org.gradle.platform.OperatingSystem.MAC_OS),
+            org.gradle.platform.BuildPlatformFactory.of(org.gradle.platform.Architecture.AARCH64, org.gradle.platform.OperatingSystem.MAC_OS)
+    ]
+}

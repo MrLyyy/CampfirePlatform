@@ -1,0 +1,66 @@
+plugins {
+    id 'multiloader-loader'
+    id 'net.minecraftforge.gradle' version '7.0.40'
+}
+
+base {
+    archivesName = "${mod_name}-forge-${minecraft_version}"
+}
+
+minecraft {
+    mappings channel: 'official', version: minecraft_version
+
+    def at = file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (at.exists()) {
+        accessTransformers.from(at)
+    }
+
+    runs {
+        configureEach {
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+            args "--mixin.config=${mod_id}.mixins.json", "--mixin.config=${mod_id}.forge.mixins.json"
+        }
+        register('client') {
+            workingDir = layout.projectDirectory.dir('runs/client')
+        }
+        register('server') {
+            workingDir = layout.projectDirectory.dir('runs/server')
+        }
+        register('data') {
+            workingDir = layout.projectDirectory.dir('runs/data')
+            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+        }
+    }
+}
+
+repositories {
+    minecraft.mavenizer(it)
+    maven fg.forgeMaven
+    maven fg.minecraftLibsMaven
+}
+
+sourceSets.main.resources.srcDir 'src/generated/resources'
+
+dependencies {
+    implementation minecraft.dependency("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
+    // Forge 1.21.1 uses Mojang names at runtime, so no obfuscation refmap is generated.
+    // Common如果用mixin，这里必须有
+    annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
+}
+
+tasks.named('jar', Jar) {
+    manifest {
+        attributes['MixinConfigs'] = "${mod_id}.mixins.json,${mod_id}.forge.mixins.json"
+    }
+}
+
+// Forge must discover the classes and mod metadata as a single module.
+sourceSets.each {
+    def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
+    it.output.resourcesDir = dir
+    it.java.destinationDirectory = dir
+}

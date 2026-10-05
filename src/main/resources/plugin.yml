@@ -1,0 +1,29 @@
+name: CampfirePlatform
+description: $description
+prefix: CampfireMC
+version: '${version}'
+
+main: com.campfiremc.mc.CampfirePlatform
+api-version: '26.3'
+load: STARTUP
+
+authors: [ Mr_ly ]
+website: https://www.campfiremc.com
+
+commands:
+  campfire:
+    description: Manage the Campfire backend connection
+    usage: /campfire <status|connect|disconnect|join|leave|send>
+    permission: campfire.admin
+  bind:
+    description: Bind your Minecraft account to Campfire
+    usage: /bind <code>
+    permission: campfire.bind
+
+permissions:
+  campfire.admin:
+    description: Manage the Campfire backend connection
+    default: op
+  campfire.bind:
+    description: Bind your own Minecraft account
+    default: true

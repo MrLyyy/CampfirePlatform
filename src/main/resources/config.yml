@@ -1,0 +1,13 @@
+backend:
+  base-url: http://127.0.0.1:3000
+  account-uuid: ""
+  private-key-base64: ""
+  connect-on-start: true
+  request-timeout-seconds: 10
+  reconnect-delay-seconds: 5
+  max-reconnect-delay-seconds: 60
+  max-frame-bytes: 1048576
+
+commands:
+  permission: campfire.admin
+  console-player-uuid: ""

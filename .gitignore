@@ -20,3 +20,8 @@ hs_err_pid*
 # Common working directory
 run
 runs/
+
+# Runtime credentials and operator-managed configuration
+**/config/campfireplatform/
+**/private-key.seed
+**/public-key.txt
